@@ -1,12 +1,11 @@
 package com.agent.tickers.repository;
 
-import org.springframework.stereotype.Repository;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.agent.tickers.model.Stock;
-import lombok.extern.slf4j.Slf4j;
+import com.agent.tickers.models.Stock;
 
-@Repository
-@Slf4j
-public class StockRepository extends JpaRepository<Stock, Long> {
+public interface StockRepository extends JpaRepository<Stock, Long> {
 
+    List<Stock> findByUserId(String userId);
 }
