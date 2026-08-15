@@ -19,14 +19,9 @@ public class StockService {
     private final StockRepository stockRepository;
 
     /** Loads a user's saved stocks, offloading the blocking JPA call. */
-    public Flux<Stock> savedStocks(String userId) {
-        return Mono.fromCallable(() -> stockRepository.findByUserId(userId))
+    public Flux<Stock> savedStocks(Long userId) {
+        return Mono.fromCallable(() -> stockRepository.findByUser_Id(userId))
                 .flatMapMany(Flux::fromIterable)
-                .subscribeOn(Schedulers.boundedElastic());
-    }
-
-    public Mono<Stock> save(Stock stock) {
-        return Mono.fromCallable(() -> stockRepository.save(stock))
                 .subscribeOn(Schedulers.boundedElastic());
     }
 }

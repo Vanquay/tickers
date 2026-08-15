@@ -7,5 +7,5 @@ import com.agent.tickers.models.Stock;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-    List<Stock> findByUserId(String userId);
+    List<Stock> findByUser_Id(Long userId);
 }
