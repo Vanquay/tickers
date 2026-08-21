@@ -3,15 +3,15 @@ package com.agent.tickers.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,13 +29,13 @@ public class User {
     private String email;
     private String role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private List<Stock> watchlist = new ArrayList<>();
+    // Watchlist holds ticker symbols only; live prices are fetched by the UI from an external service.
+    // @ElementCollection(fetch = FetchType.EAGER)
+    // @CollectionTable(name = "user_watchlist", joinColumns = @JoinColumn(name = "user_id"))
+    // @Column(name = "ticker")
+    private List<String> watchlist = new ArrayList<>();
 
-    /** Keeps both sides of the relationship in sync. */
-    public void addStock(Stock stock) {
-        stock.setUser(this);
-        this.watchlist.add(stock);
+    public void addTicker(String ticker) {
+        this.watchlist.add(ticker);
     }
 }
